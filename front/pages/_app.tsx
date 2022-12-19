@@ -1,25 +1,41 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
+import "@rainbow-me/rainbowkit/styles.css";
+import { SessionProvider } from "next-auth/react";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { goerli, mainnet, polygon } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import Layout from "../components/ui/Layout";
+import "../styles/globals.css";
 
-import { createClient, configureChains, defaultChains, WagmiConfig } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
-import { SessionProvider } from 'next-auth/react';
+const { chains, provider } = configureChains(
+  [mainnet, goerli, polygon],
+  [publicProvider()]
+);
 
-const { provider, webSocketProvider } = configureChains(defaultChains, [publicProvider()]);
-
-const client = createClient({
-  provider,
-  webSocketProvider,
-  autoConnect: true,
+const { connectors } = getDefaultWallets({
+  appName: "Certifi",
+  chains,
 });
 
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
 
 export default function App({ Component, pageProps }) {
   return (
-      <WagmiConfig client={client}>
-        <SessionProvider session={pageProps.session} refetchInterval={0}>
-          <Component {...pageProps} />
-        </SessionProvider>
-      </WagmiConfig>
+    <WagmiConfig client={wagmiClient}>
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <RainbowKitSiweNextAuthProvider>
+          <RainbowKitProvider chains={chains}>
+            <Layout>
+              <Component {...pageProps} />;
+            </Layout>
+          </RainbowKitProvider>
+        </RainbowKitSiweNextAuthProvider>
+      </SessionProvider>
+    </WagmiConfig>
   );
 }
