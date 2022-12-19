@@ -1,14 +1,12 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Link } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Link from "next/link";
+import NextLink from "next/link";
 
 export const MainHeader = () => {
   return (
     <Box as="header">
       <Flex alignItems="center" justifyContent="space-between">
-        <Link href="/">
-          <Text cursor="pointer">Home</Text>
-        </Link>
+        <Link as={NextLink} href="/">Home</Link>
         <ConnectButton />
       </Flex>
     </Box>

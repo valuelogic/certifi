@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { goerli, mainnet, polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
-import Layout from "../components/ui/Layout";
+import Layout from "../components/Layout";
 import "../styles/globals.css";
 
 const { chains, provider } = configureChains(
