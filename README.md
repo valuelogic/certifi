@@ -18,16 +18,24 @@ NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=e1422215c9234cad0d435bd41a0f29cd
 ```
 
-## front
+## front:
 
-run dev server:
+ - run dev server:
 
 ```bash
 make f_dev
 ```
 
-run ESLint:
+ - run ESLint:
 
 ```bash
 make f_dev
+```
+
+## core:
+
+ - run dev node:
+
+```bash
+make c_dev
 ```
